@@ -1,0 +1,973 @@
+Important primany functions To Notice
+date()
+setwd()
+getwd()
+list.files()
+ls()
+rm()
+summary()
+loadedNamespaces()
+search() ## use attach(x) and detach(x)  
+
+Printing in R
+
+> stop("wrong input number")
+Error: wrong input number
+> cat("the number you have entered is",x,"\n\n")
+the number you have entered is 1 
+
+> paste("The cube root of 2 is :",2*2*2)
+[1] "The cube root of 2 is : 8"
+
+Objects in R
+R has five classes of objects:
+1: character
+2: numeric
+3: integer
+4: complex 
+5: logical (true / false)
+
+Structures In R
+1: scalar
+2: Vector
+3: Matrix
+4: array
+5: dataframe
+6: list( can have any of the above structures)
+
+	Homogeneous	Heterogeneous
+1 dim	Atomic Vector	List
+2 dim	Matrix			Data frame
+3 dim	Array			
+
+-> Vector can contain only one type of atomic objects
+-> In a vector if the first element is a character then all the elements need to be only characters
+-> List can contain multiple type of atomic objects. 
+-> In a list there can be any elements unlike a vector.
+-> A Matrix can be in only one class.
+-> A data frame can have any classes for a column. The entire column has the same class as specified.
+-> The most basic object is a vector
+-> A vector can only contain objects of the same class
+-> A list is a seq of objects where it can have any objects. It can also have a list
+
+NUMBERS
+-> numbers in R are generally treated as numeric objects 
+-> Entering 1 gives numeric object. Entering 1L gives integer. L suffix is to specify integer
+-> There is also a special number called Inf which is infinity i.e 1/0: Inf
+-> The value NaN is undefined value(not a number) i.e. 0/0:NaN
+
+Attributes:
+-> These can be a part of an object in R
+-> names,dimnames (dimension names)
+-> dimensions ( eq: matrices,arrays)
+    a matrix has number of rows and number of columns which are dimensions 
+    a multi dimension array may have more than 2 dimensions 
+-> class
+    every object will have a class: Numeric object class is numeric, Integer object class is Integer
+-> length
+    every object also has length
+    eg: number of elements in the vector is the length of the vector
+-> other user defined attributes/metadata
+    These are the methods where we can define separately for an object using attribute functions
+There is attributes() general function which allows to set or modify attributes for an R object
+
+Expressions are the things that we type in the R prompt
+The symbol <- is the assignment operator
+ use ## to comment anywhere in the code
+
+> x<- 5
+> x
+[1] 5
+
+This [1] is a vector and 5 is the element. It says what element of the vector is being shown
+
+x <- 1:20    ## creates a seq from 1 to 20
+print(x)
+[1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+x <- seq(3, 3.4, 0.01)
+> x
+ [1] 3.00 3.01 3.02 3.03 3.04 3.05 3.06 3.07 3.08 3.09 3.10
+[12] 3.11 3.12 3.13 3.14 3.15 3.16 3.17 3.18 3.19 3.20 3.21
+[23] 3.22 3.23 3.24 3.25 3.26 3.27 3.28 3.29 3.30 3.31 3.32
+[34] 3.33 3.34 3.35 3.36 3.37 3.38 3.39 3.40
+
+CREATING VECTORS
+The c() function can be used to create vectors of objects
+
+x <- c(0.5, 0.6)              ## numeric
+x <- c(TRUE, FALSE)   ## logical
+x <- c(T, F)                    ## logical
+x <- c(“a”, “b”, “c”)         ## character
+x <- 9:29                       ## integer
+x <- c(i+0i, 2+4i)           ## complex
+
+Using vector() function
+> x <- vector(“numeric”, length = 10)
+> x
+[1] 0 0 0 0 0 0 0 0 0 0
+The default value for a numeric vector is 0
+
+HISTOGRAMS
+Examining the distribution of a set of data
+
+— You can also use histograms to display your data ( which can be only numeric )
+— bw means Bandwidth
+ 
+> numbers <- c(1,4,6,3,7,2,8,67,3,34,56,12,44)
+> fivenum(numbers)
+> stem(numbers)
+> hist(numbers) - shows the histogram of your data
+NOTE: for all hist functions, you need to call hist first
+> rug(numbers) - shows your exact data points on the histogram generated.
+> lines(density(numbers, bw=0.01))
+
+>long <- numbers[numbers > 3]
+>plot(ecdf(long), do.points=FALSE, verticals=TRUE)
+
+
+
+MIXING Objects ( Coercion )
+The order of  
+Numeric ——> Character — — > Logical — — > Numeric
+Coercion occurs so that every element in the vector is of same class
+Implicit Coercion
+y <- c(1.7, “a”)       ## character
+y <- c(TRUE, 2)     ## numeric
+y <- c(“s”, TRUE)   ## character
+ 
+TRUE is 1 and FALSE is 0 in R
+Explicit Coercion
+> x <- 0:6
+> class(x)
+[1] "integer"
+> as.numeric(x)
+[1] 0 1 2 3 4 5 6
+> as.logical(x)      ## anything greater than 0 is TRUE
+[1] FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+> as.character(x)
+[1] "0" "1" "2" "3" "4" "5" "6"
+> x <- c("a","b","c")
+> as.numeric(x)
+[1] NA NA NA
+Warning message:
+NAs introduced by coercion 
+> as.logical(x)
+[1] NA NA NA
+> as.complex(x)
+[1] NA NA NA
+Warning message:
+NAs introduced by coercion 
+> x <- c(1,2,3)
+> as.complex(x)
+[1] 1+0i 2+0i 3+0i
+
+MATRICES
+These are special type of vectors in R. There are not a separate class of objects
+They have attributes called as dimension
+Matrices are contracted column wise
+
+> m <- matrix(nrow = 2, ncol = 3)
+> m
+     [,1] [,2] [,3]
+[1,]   NA   NA   NA
+[2,]   NA   NA   NA
+> dim(m)
+[1] 2 3
+> attributes(m)
+$dim
+[1] 2 3
+
+> m <- matrix(1:6, row = 2, col = 3)
+Error in matrix(1:6, row = 2, col = 3) : 
+  unused arguments (row = 2, col = 3)
+> m <- matrix(1:6, nrow = 2, ncol = 3)
+> m
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+———————————————————
+> m <- 1:10
+> m
+ [1]  1  2  3  4  5  6  7  8  9 10
+> dim(m) <- c(2,5)   ## 2 rows 5 columns
+> m
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    3    5    7    9
+[2,]    2    4    6    8   10
+      ——————————————————
+> x<- 1:3
+> y<- 10:12
+> cbind(x,y)
+     x  y
+[1,] 1 10
+[2,] 2 11
+[3,] 3 12
+> rbind(x,y)
+  [,1] [,2] [,3]
+x    1    2    3
+y   10   11   12
+      
+LISTS
+Lists are like vector, Every item of the list could be an object of a different class
+
+> x<- list(1,"a",TRUE, 1+4i)
+> x
+[[1]]
+[1] 1
+
+[[2]]
+[1] "a"
+
+[[3]]
+[1] TRUE
+
+[[4]]
+[1] 1+4i
+
+FACTORS
+-> Its a special type of vector which is used to represent categorical data
+-> There are 2 types of factors
+     1: Unordered
+     2: Ordered
+-> Factors are treated specially by modeling functions like lm() and glm()
+-> Using factors with labels is better than using integers because factors are self-describing.
+-> Having a variable that has values “Male” and “Female” is better than a variable that has values 1 and 2 which is how it is stored i the data base
+-> levels are arranged in alphabetical order. you can change the orientation by calling levels while initialtiing a factor.
+
+> x <- factor(c("yes","yes","no","yes","no"))
+> x
+[1] yes yes no  yes no 
+Levels: no yes
+> table(x)
+x
+ no yes 
+  2   3 
+> unclass(x)
+[1] 2 2 1 2 1
+attr(,"levels")
+[1] "no"  "yes"
+> x <- factor(c("yes","yes","no","yes","no"), levels = c("yes","no"))
+> x
+[1] yes yes no  yes no 
+Levels: yes no
+
+> myColorOrdered <- factor(myColor, levels=c("red","green","yellow"))
+> myColorOrdered
+[1] red    green  red    red    green  yellow
+Levels: red green yellow
+> myColorOrdered <- factor(myColor, levels=c("red","green","yellow"),ordered=TRUE)
+> myColorOrdered
+[1] red    green  red    red    green  yellow
+Levels: red < green < yellow
+> myColorOrdered < green
+Error: object 'green' not found
+> myColorOrdered < "green"
+[1]  TRUE FALSE  TRUE  TRUE FALSE FALSE
+
+-> The order of the levels can be set using the levels argument to factor(). This can be important in linear modeling because the first level is used as the baseline level
+-> The order is determined by the alphabetical order. You can still change it
+
+> x <- factor(c("yes","yes","no","yes","no"), levels = c("yes","no"))
+> x
+[1] yes yes no  yes no 
+Levels: yes no
+
+MISSING VALUES
+-> Missing values are denoted by NA or NaN ( undefined mathematical operations)
+-> is.na() is used to test objects if they are NA
+-> is.nan() is used to test for NaN
+-> NA values have a class also, so there are integer NA, character NA, etc
+-> NaN value is also NA but the converse is not true
+
+> x <- c(1,2,NA,10,2)
+> y <- c(1,2,NA,NaN,2)
+> is.na(x)
+[1] FALSE FALSE  TRUE FALSE FALSE
+> is.nan(x)
+[1] FALSE FALSE FALSE FALSE FALSE
+> is.na(y)
+[1] FALSE FALSE  TRUE  TRUE FALSE
+> is.nan(y)
+[1] FALSE FALSE FALSE  TRUE FALSE
+
+DATA FRAMES
+-> It is a key data type in R and is used to store tabular data
+-> They are represented as a special type of list where every element of the list has to have the same length
+-> Each element of the list can be thought of as a column and the length of each element of the list is the number of rows
+-> like matrices, data frames can store different classes of objects in each column ( like lists). Matrices must have every element be the same class
+-> Data frames also have a special attribute called row.names. Every row of the data frame has a name
+-> Data frames are usually created by calling read.table() or read.csv()
+-> Can also be converted to matrix by calling data.matrix()
+-> you can also create data frames using data.frame()
+
+> x<- data.frame(foo = 1:4, bar = c(T,T,F,F))
+> x
+  foo   bar
+1   1  TRUE
+2   2  TRUE
+3   3 FALSE
+4   4 FALSE
+> nrow(x)
+[1] 4
+> ncol(x)
+[1] 2
+> names(x)
+[1] "foo" "bar"
+
+NAMES
+-> All R objects can have names, which can be useful for writing readable code and self-describing objects.
+
+> x<- 1:3
+> names(x)
+NULL
+> names(x) = c("foo","bar")
+> names(x)
+[1] "foo" "bar" NA   
+> x
+ foo  bar <NA> 
+   1    2    3 
+> names(x) = c("foo","bar","bow")
+> x
+foo bar bow 
+  1   2   3 
+> names(x)
+[1] "foo" "bar" "bow"
+
+-> Lists can also have names
+> x<- list(a=1,b=2,c=3)
+> x
+$a
+[1] 1
+
+$b
+[1] 2
+
+$c
+[1] 3
+
+-> Matrices can also have names
+> m <- matrix(1:4,nrow=2, ncol =2)
+> dimnames(m) <- list(c("a","b"),c("c","d"))
+> m
+  c d
+a 1 3
+b 2 4
+
+SUBSETTING MATRICES
+
+There are number of operations that can be used to extract subsets of R objects
+-> [ always returns an object of the same class as the original. It can be used to select more than one element ( there is one exception). If you subset a vector, you get back a list. if matrices, then matrices
+-> [[ is used to extract elements of a list or a data frame. It can only be used to extract a single element and the class of the returned object will not necessarily be a list or data frame
+-> $ is used to extract elements of a list or data frame by name. The semantics are very similar to [[
+
+> x <- c("a","b","c","c","d","a")
+> x[1]
+[1] "a"
+> x[2]
+[1] "b"
+> x[1:4]
+[1] "a" "b" "c" "c"
+> x[x>"a"]
+[1] "b" "c" "c" "d"
+> u <- x>"a"
+> u
+[1] FALSE  TRUE  TRUE  TRUE  TRUE FALSE
+> x[u]
+[1] "b" "c" "c" "d"
+
+-> Matrices can be subsetted too
+> x<- matrix(1:6,2,3)
+> x
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+> x[1,2]
+[1] 3
+> x[1,]
+[1] 1 3 5
+> x[]
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+> x[,3]
+[1] 5 6
+
+-> So, by default, when a single element of a matrix is retrieved, it is returned as a vector of length 1 rather than a 1 x1 matrix. This behavior can be turned off by setting drop = FALSE
+ > x[1,2, drop = FALSE]
+     [,1]
+[1,]    3
+
+
+SUBSETTING LISTS
+-> In subsetting a list, you can use [ or [[ or $ operator
+
+> x<- list(foo = 1:4, bar = 0.5)
+> x
+$foo
+[1] 1 2 3 4
+
+$bar
+[1] 0.5
+
+> x[1]
+$foo
+[1] 1 2 3 4
+
+> x[[1]]
+[1] 1 2 3 4
+> x$foo
+[1] 1 2 3 4
+> x[["foo"]]
+[1] 1 2 3 4
+> x["foo"]
+$foo
+[1] 1 2 3 4
+
+-> If you need to extract multiple elements of the list then use [
+> x <- list(foo = 1:4, bar = "hello", bow = T)
+> x
+$foo
+[1] 1 2 3 4
+
+$bar
+[1] "hello"
+
+$bow
+[1] TRUE
+
+> x[1,3]
+Error in x[1, 3] : incorrect number of dimensions
+> x[c(1,3)]
+$foo
+[1] 1 2 3 4
+
+$bow
+[1] TRUE
+
+-> The [[ operator can be used with computed indices. The $ can only be used with literal names
+-> [[ is used to index a list where the index itself is computed
+> x <- list(foo = 1:4, bar = "hello", bow = T)
+> name <- "foo"
+> x[[name]]
+[1] 1 2 3 4
+> x$name
+NULL
+
+-> The [[ can also take a integer sequence 
+> x<- list( a = list(10,20,30), b = c(3.14,2.18))
+> x[[c(1,2)]]
+[1] 20
+
+> x[c(1,2)]
+$a
+$a[[1]]
+[1] 10
+
+$a[[2]]
+[1] 20
+
+$a[[3]]
+[1] 30
+
+$b
+[1] 3.14 2.18
+
+-> Partial Matching with [[ and $ operators
+> x<- list(hyderabad = c("biryani","hot","charminar"))
+> x$h
+[1] "biryani"   "hot"       "charminar"
+> x[["h"]]
+NULL
+> x[["h", exact = FALSE]]
+[1] "biryani"   "hot"       "charminar"
+
+-> Removing the NA values
+> x <- c(1,2,4,NA,10,NA,5)
+> bad <- is.na(x)
+> x[!bad]
+[1]  1  2  4 10  5
+> x[bad]
+[1] NA NA
+
+-> Removing the NA values by taking the subset of two objects
+> x <- c(1,2,3,NA,5,NA,7)
+> y <- c("a","b","c",NA,"e",NA,"i")
+> z <- c("a","b",NA,"d","e",NA)
+> good <-complete.cases(x,y)
+> x[good]
+[1] 1 2 3 5 7
+> y[good]
+[1] "a" "b" "c" "e" "i"
+> good <-complete.cases(x,z)
+Error in complete.cases(x, z) : not all arguments have the same length
+> z <- c("a","b",NA,"d","e",NA,NA)
+> good <-complete.cases(x,z)
+> x[good]
+[1] 1 2 5
+> z[good]
+[1] "a" "b" "e"
+
+-> If there are missing values (NA’s) in Data frames, you can remove them too
+> x <- c( 1,   2,  NA,     4,  NA,  5)
+> y <- c("a", "b", NA,   "d",  NA, "f")
+> z <- c(NA, "zb", "zc","zd",  NA, NA)
+> newdf <- data.frame(cbind(x,y,z))
+> newdf
+     x    y    z
+1    1    a <NA>
+2    2    b   zb
+3 <NA> <NA>   zc
+4    4    d   zd
+5 <NA> <NA> <NA>
+6    5    f <NA>
+> df <- na.omit(newdf)
+> df
+  x y  z
+2 2 b zb
+4 4 d zd
+
+-> below we have a air quality data frame with 100 rows and 5 columns
+>airquality[1:6, ]
+> good <- complete.cases(airquality)
+> airquality[good, ][1:6, ] 
+
+
+VECTORIZED OPERATIONS
+-> Many operations in R are vectorized making code more efficient, concise and easier to read
+> x<- 1:4; y <- 6:9
+> x + y
+[1]  7  9 11 13
+> x > 2
+[1] FALSE FALSE  TRUE  TRUE
+> x >= 2
+[1] FALSE  TRUE  TRUE  TRUE
+> y == 8
+[1] FALSE FALSE  TRUE FALSE
+> x * y
+[1]  6 14 24 36
+> x / y
+[1] 0.1666667 0.2857143 0.3750000 0.4444444
+> x = y
+> y
+[1] 6 7 8 9
+> x
+[1] 6 7 8 9
+> x==y
+[1] TRUE TRUE TRUE TRUE
+
+>  x<- 1:4; y <-6:10
+> x+y
+[1]  7  9 11 13 11
+Warning message:
+In x + y : longer object length is not a multiple of shorter object length
+
+-> You can even perform these operations in matrices
+> x <- matrix(1:4,2,2); y <-matrix(rep(10,4),2,2)
+> x
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+> y
+     [,1] [,2]
+[1,]   10   10
+[2,]   10   10
+> x * y             ## Its an element-wise multiplication
+     [,1] [,2]
+[1,]   10   30
+[2,]   20   40
+> x / y
+     [,1] [,2]
+[1,]  0.1  0.3
+[2,]  0.2  0.4
+> x %*% y      ## this is a true matrix multiplication
+     [,1] [,2]
+[1,]   40   40
+[2,]   60   60
+
+READING DATA INTO R
+
+There are few principal functions reading data into R
+— read.table, read.csv	for reading tabular data. reads from text file with rows and columns and returns a data frame
+— readLines			for reading lines of a text file. returns a character vector in R
+— source			for reading in R code files (inverse of dump)
+— dget			for reading in R code file (inverse of dput)
+— load			for reading in saved workspaces (binary objects)
+— unserialize		for reading single R objects in binary form (binary objects)
+
+Reading Data Files with read.table for small and moderate datasets
+-> below are the arguments you pass for this function
+	— file, the name of the file, or a connection
+	— header, logical indicating if the file has a header line
+	— sep, a string indicating how the columns are separated
+	— nrows, the number of rows in the dataset
+	— comment.char, a character stain indicating the comment character
+	— skip, the number of lines from the beginning to skip
+	— stringsAsFactors, should character variables be coded as factors ( TRUE or FALSE)
+
+-> for small to moderately sized datasets, you can usually call read.table without specifying any other arguments
+	data <- read.table(“sample.txt”)
+-> R automatically does the below 
+	- skips lines that begin with #
+	- figures out how many rows are there. Also how much memory to be allocated
+	- figures what type of variable is in each column of the table
+	- default separator for columns is space
+-> read.csv is identical to read.table except that the default separator is comma. Also specifies the header to be able to TRUE
+
+Reading Data Files with read.table for larger datasets
+-> When dealing with larger datasets performing these steps may be useful
+	- Read the help of read.table which provides great hints
+	- Make a rough calculation of the memory required to store your dataset. If the dataset is larger than the amount of RAM, stop it immediately
+	- set comment.char = “” if there are no commented lines in your file.
+
+-> Using colClasses will optimize the read.table as R doesn’t need to figure it out what classes does the data have.
+-> You can even achieve this by calling first 100 rows, know the column classes and pass it to the table again.
+initial <- read.table(“sample.txt”, rows = 100)
+classes <- sapply(initial, class)
+fulltable <- read.table(“sample.txt”, colClasses = classes)
+
+-> if the data file consists of 1,500,000 rows X 120 columns X 8 bytes/numeric = 1.34GB. It is usually said to have double the RAM space available when reading this larger files
+
+Connections
+-> Data are read using connection interfaces. Connections can be made to files ( most common)
+	file — opens a connection to a file
+	gzfile — opens a connection to a file compressed with gzip
+	bzfile — opens a connection to a file compressed with bzip2
+	url — opens a connection to a webpage
+
+-> File Connections:
+	> str(file)
+	function (description = “”, open = “”, blocking = TRUE, encoding = getOption(“encoding”))
+-> description is the name of the file
+-> open is a code indicating
+	“r” — read only
+	“w” — writing and initializing a new file
+	“a” — appending
+	“rb”,”wb”,”ab” reading, writing or appending in binary mode ( WINDOWS )
+
+Establishing a Connection and reading lines of a text file
+
+> con <- file("sample.txt","r")
+> data <- readLines(con, 1)
+> data
+[1] "1 3 5"
+
+-> you can also read using gzfile(sample.gz”)
+
+Establishing the connection with url
+-> useful for creating a connection to a non file object and use readLine function 
+
+> con <- url("http://www.jhsph.edu","r")
+> x <- readLines(con)
+> head(x)
+[1] "<!DOCTYPE html>"                                               
+[2] "<html lang=\"en\">"                                            
+[3] ""                                                              
+[4] "<head>"                                                        
+[5] "<meta charset=\"utf-8\" />"                                    
+[6] "<title>Johns Hopkins Bloomberg School of Public Health</title>"
+
+
+WRITING DATA 
+
+There are few analogous functions for writing data to files
+— write.table
+— writeLines
+— dump
+— dput
+— save
+— serialize
+
+dput R Object
+> x<- data.frame(foo = 1:4, bar = c(T,T,F,F))
+> dput(x)
+structure(list(foo = 1:4, bar = c(TRUE, TRUE, FALSE, FALSE)), .Names = c("foo", 
+"bar"), row.names = c(NA, -4L), class = "data.frame")
+> dput(x, file = "x.R")
+> new.y <- dget("x.R")
+> new.y
+  foo   bar
+1   1  TRUE
+2   2  TRUE
+3   3 FALSE
+4   4 FALSE
+
+Dump R Object
+-> multiple objects can be deparsed using the dump function and read back in using source
+> x<- "foo"
+> y <- data.frame(a=1,b ="b")
+> dump(c("x","y"), file = "dumpexample.R")
+> x
+[1] "foo"
+> y
+  a b
+1 1 b
+> rm(x,y)
+> x
+Error: object 'x' not found
+> source("dumpexample.R")
+> x
+[1] "foo"
+> y
+  a b
+1 1 b
+
+
+Textual Formats
+
+-> Dumping and dputing the data are used when writing the data to store the metadata of the file which contains the classes of the objects. Source and dget are used when reading the files for this metadata.
+
+
+CONTROL STRUCTURES 
+
+-> Control structures in R allows to control the flow of an R program
+	— if,else	testing a condition
+	— for		execute a loop a feed number of times
+	— while 	execute a loop while a condition is true
+	— repeat	execute an infinite loop
+	— break	beak the execute of a loop
+	— next	skip an interaction of a loop
+	— return 	exit a function
+-> Most control structures are not used in an interactive session but used when writing a R program or R function (structured format)
+
+IF Condition 
+if(condition)
+{
+## do something
+} 
+else 
+{
+## do something
+}
+
+if(condition1)
+{
+## do something
+} 
+else if(condition2)
+{
+## do something else
+}
+else 
+{
+## do something else
+}
+
+if(x>3) {
+y<- 10
+} else {
+y<- 0
+}
+OR
+y <- if(x >3) {
+10
+} else {
+0 
+}
+
+For Loop
+-> seq_along takes a vector as an input and creates an integer sequence thats equal to the length of the vector 
+
+x <- c(“a”,”b”,”c”,”d”)
+for (i in 1:10) 
+{
+print(x[i]) 
+}
+
+for(i in seq_along(x))
+{
+print(x[i])
+}
+
+for(letter in x)
+{
+print(letter)
+}
+
+for(i in 1:4) print(x[i])
+
+Nested For Loops	
+-> seq_len is a function used to seek the exact length of the vector
+
+> x <- matrix(1:6, 2,3)
+> for(i in seq_len(nrow(x)))
++ {
++  for(j in seq_len(ncol(x)))
++  {
++   print(x[i,j])
++  }
++ }
+[1] 1
+[1] 3
+[1] 5
+[1] 2
+[1] 4
+[1] 6
+
+While Loop
+
+> count <- 0
+> while(count <10)
++ {
++ print(count)
++ count <- count + 1
++ }
+[1] 0
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 8
+[1] 9
+
+EXAMPLE 2
+
+> z <- 5
+> while(z>=3 && z<=10)
++ {}
+> z <- 5
+> while(z>=3 && z<=10)
++ {
++ print(z)
++ coin <- rbinom(1,1,0.5)
++ if(coin ==1)
++ {
++ z <- z+1
++ }
++ else
++ {
++ z <- z-1
++ }
++ }
+[1] 5
+[1] 4
+[1] 3
+[1] 4
+[1] 3
+
+Repeat
+-> repeat initiate an infinite loop. These are not commonly used in statistical applications but they do have their own uses.
+-> The only way to exit a repeat loop is to call a break
+> x0 <- 1
+> to1 <- 1e-8
+> repeat {
++ x1 <- computeEstimate()
++ if(abs(x1 -x0) < to1)
++ {
++ break
++ }
++ else
++ {
++ x0 <- x1
++ }
++ }
+
+-> The previous loop is a bit dangerous since there’s no guarantee it will stop. 
+-> It’s better to set a hard limit on the number of iterations ( eg: using a for loop) and then report whether convergence as achieved or not
+
+Next , Return
+-> next is used to sip an iteration of a loop
+-> return signals that a function should exit and return a given value
+
+> for(i in 1:10)
++ {
++ if(i<=5)
++ {
++ ## skip the lines
++ next
++ }
++ print(i)
++ }
+[1] 6
+[1] 7
+[1] 8
+[1] 9
+[1] 10
+
+
+FUNCTIONS
+
+EXAMPLE 1
+Lets do cube of a number
+> cube <- function(n) {
++ sq <- function() n*n
++ n*sq()
++ }
+> cube(2)
+[1] 8
+
+EXAMPLE 2
+Lets have an example of bank account opening and have a list of operations you can do on that function
+	— Deposit
+	— Withdraw
+	— Balance Check
+
+open.account <- function(total) 
+{ 
+  list( 
+        deposit = function(amount) 
+        { 
+          if(amount <= 0) 
+          stop("Deposits must be positive!\n") 
+          total <<- total + amount 
+          cat(amount, "deposited. Your balance is", total, "\n\n") 
+        }, 
+        withdraw = function(amount) 
+        { 
+          if(amount > total) 
+          stop("You don’t have that much money!\n") 
+          total <<- total - amount 
+          cat(amount, "withdrawn. Your balance is", total, "\n\n") 
+        }, 
+        balance = function() 
+        { 
+          cat("Your balance is", total, "\n\n") 
+        } 
+      ) 
+ }
+
+To call this functions 
+	- Lets first create an account 
+	  	govind <- open.account(100)
+	- Now lets deposit 10$
+	   	govind$withdraw(10)
+	  	10 withdrawn. Your balance is 90	
+	- Lets deposit 100 more
+	     	govind$deposit(100)
+               	100 deposited. Your balance is 190 
+	- Lets withdraw more than funds available
+        		govind$w(200)
+		Error in govind$w(200) : You don’t have that much money!
+ 
+SWEAVE and KNITR
+-> The Sweave let you integrate to LaTex documents where it helps to write your R code run dynamically in the document and gives your visual result.
+-> You need to download the MiKTex first and open the R Sweave file in R studio to begin working.
+-> The flow is 
+	Create Sweave file —> Compile Pdf —> .Tex + R Results —> .Tex file is compiled to a pdf
+-> R code chunk is enclosed within <<>>= and a @
+-> You can specify your options for each chuck within the <<>>
+
+R Chunk Options:
+-> Name: 
+	<<name = Project1_Chunck_1>>
+-> Show the R code or not
+	<<echo=TRUE>> or <<echo=FALSE>>
+-> Show the figure or not
+	<<fig=TRUE>> or <<fig=FALSE>>
+-> Show results, the code generates
+	Show code Execution Results <<results=verbatim>>
+	Hide the code Execution Results <<results=hide>>
+	Produce LaTex output(usually table) <<results=tex>>
+
+ 
+
+
+
+
+
+
+
+
+
