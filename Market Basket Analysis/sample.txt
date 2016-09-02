@@ -1,0 +1,11 @@
+C,MySQL,OOPS
+MySQL,OOPS,Java,C
+OOPS,JAVA
+C,OOPS,Java,Parallel processing,MapReduce
+Parallel processing,MapReduce,Pig,Hive,Sqoop
+MySQL,OOPS,C,Scala,Spark Programming
+C,Pig,Scala,R Programming
+MySQL,OOPS,C
+Java,OOPS
+Java,MySQL,MapReduce,Hive,Sqoop,Flume
+Java,Springs,Hibernate,HTML,CSS,JavaScript
